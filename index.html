@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OCEAN FISH | Icaraíma • Pesca • Praia • Náutica</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ocean: {
+                50: "#f0f9ff",
+                100: "#e0f2fe",
+                500: "#0284c7",
+                600: "#0284c7",
+                700: "#0369a1",
+                800: "#075985",
+                900: "#0c4a6e",
+                dark: "#002845",
+              },
+              accent: "#eab308",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
+    <!-- TOP BAR (Sede Icaraíma e Contato Erick Gabriel) -->
+    <div class="bg-ocean-dark text-white text-xs py-2 px-4">
+      <div
+        class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2"
+      >
+        <div class="flex items-center gap-2 font-medium">
+          <i class="fa-solid fa-location-dot text-amber-400"></i>
+          <span
+            >Loja Sede em <strong>Icaraíma - PR</strong> (Enviamos para todo o
+            Brasil)</span
+          >
+        </div>
+        <div class="flex items-center gap-4 text-gray-300 text-xs">
+          <a
+            href="https://wa.me/5544997241127"
+            target="_blank"
+            class="hover:text-amber-400 font-bold transition flex items-center gap-1 text-emerald-400"
+          >
+            <i class="fa-brands fa-whatsapp"></i> Atendimento: Erick Gabriel -
+            (44) 99724-1127
+          </a>
+          <button
+            onclick="toggleSellerPanel()"
+            class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-2 py-0.5 rounded text-[11px] transition"
+          >
+            <i class="fa-solid fa-store mr-1"></i> Painel Vendedor
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEADER PRINCIPAL -->
+    <header
+      class="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 py-3.5 flex items-center justify-between gap-4"
+      >
+        <!-- Logo -->
+        <a
+          href="#"
+          onclick="showPage('storePage')"
+          class="flex items-center gap-3 group"
+        >
+          <div
+            class="w-12 h-12 bg-ocean-800 rounded-xl flex items-center justify-center text-white text-2xl shadow-md group-hover:bg-ocean-600 transition"
+          >
+            <i class="fa-solid fa-fish-fins"></i>
+          </div>
+          <div>
+            <span
+              class="text-2xl font-black tracking-tight text-ocean-800 leading-none block"
+              >OCEAN<span class="text-ocean-500">FISH</span></span
+            >
+            <span
+              class="text-[10px] tracking-widest font-bold text-amber-600 uppercase block"
+              >ICARAÍMA • PR</span
+            >
+          </div>
+        </a>
+
+        <!-- Pesquisa -->
+        <div class="flex-1 max-w-xl hidden md:block">
+          <div class="relative">
+            <input
+              type="text"
+              id="searchInput"
+              onkeyup="searchProducts()"
+              placeholder="Buscar anzóis, varas, molinetes, barcos..."
+              class="w-full bg-gray-50 border border-gray-300 rounded-full py-2.5 pl-5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500"
+            />
+            <button
+              onclick="searchProducts()"
+              class="absolute right-1 top-1/2 -translate-y-1/2 bg-ocean-600 text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-ocean-700"
+            >
+              <i class="fa-solid fa-magnifying-glass text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Carrinho / Ações -->
+        <div class="flex items-center gap-4">
+          <button
+            onclick="toggleCartDrawer()"
+            class="relative flex items-center gap-2 bg-ocean-50 hover:bg-ocean-100 text-ocean-800 px-3.5 py-2 rounded-full transition border border-ocean-200"
+          >
+            <div class="relative">
+              <i class="fa-solid fa-cart-shopping text-xl"></i>
+              <span
+                id="cartBadge"
+                class="absolute -top-2 -right-2 bg-amber-500 text-slate-900 font-extrabold text-[11px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow"
+                >0</span
+              >
+            </div>
+            <span
+              class="font-bold text-sm hidden lg:inline"
+              id="cartHeaderTotal"
+              >R$ 0,00</span
+            >
+          </button>
+        </div>
+      </div>
+
+      <!-- MENU DE NAVEGAÇÃO DE PÁGINAS -->
+      <nav class="bg-ocean-900 text-white text-xs border-b border-ocean-800">
+        <div
+          class="max-w-7xl mx-auto px-4 flex items-center space-x-2 overflow-x-auto no-scrollbar py-2"
+        >
+          <button
+            onclick="showPage('storePage')"
+            class="nav-page-btn font-bold px-3 py-1.5 rounded bg-ocean-700 hover:bg-ocean-600 text-white flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-store text-amber-400"></i> Catálogo Principal
+          </button>
+          <button
+            onclick="showPage('landingPage')"
+            class="nav-page-btn font-bold px-3 py-1.5 rounded hover:bg-ocean-800 text-gray-200 flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-bolt text-amber-400"></i> Oferta Especial Kit
+            Pesca
+          </button>
+          <button
+            onclick="showPage('nauticaPage')"
+            class="nav-page-btn font-bold px-3 py-1.5 rounded hover:bg-ocean-800 text-gray-200 flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-ship text-amber-400"></i> Showroom Náutico &
+            Barcos
+          </button>
+          <button
+            onclick="showPage('trackPage')"
+            class="nav-page-btn font-bold px-3 py-1.5 rounded hover:bg-ocean-800 text-gray-200 flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-truck-fast text-amber-400"></i> Rastrear
+            Pedido
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- PÁGINA 1: CATÁLOGO PRINCIPAL (LOJA) -->
+    <div id="storePage" class="page-content flex-1">
+      <!-- BANNER HERO -->
+      <section
+        class="bg-gradient-to-r from-ocean-900 via-ocean-800 to-ocean-700 text-white py-10 px-4"
+      >
+        <div
+          class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8"
+        >
+          <div class="max-w-xl space-y-4 text-center md:text-left">
+            <span
+              class="bg-amber-400 text-slate-900 text-xs font-black uppercase px-3 py-1 rounded-full"
+            >
+              <i class="fa-solid fa-truck"></i> Sede Própria em Icaraíma - PR
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-black leading-tight">
+              EQUIPAMENTOS DE PESCA & NÁUTICA
+            </h1>
+            <p class="text-ocean-100 text-sm">
+              Compre direto da loja e receba na sua cidade. Frete calculado a
+              partir do CEP de Icaraíma/PR.
+            </p>
+            <a
+              href="https://wa.me/5544997241127?text=Olá%20Erick%20Gabriel,%20gostaria%20de%20tirar%20dúvidas%20sobre%20os%20produtos!"
+              target="_blank"
+              class="inline-flex bg-emerald-600 hover:bg-emerald-700 text-white font-black px-6 py-3 rounded-lg shadow-lg items-center gap-2 text-sm transition"
+            >
+              <i class="fa-brands fa-whatsapp text-xl"></i> Falar com Erick
+              Gabriel
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ÁREA DE CATEGORIAS E CATÁLOGO -->
+      <main class="max-w-7xl mx-auto px-4 my-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <!-- SIDEBAR DE FILTROS (CATEGORIAS) -->
+          <aside class="w-full lg:w-64 flex-shrink-0 space-y-6">
+            <div
+              class="bg-white p-5 rounded-xl shadow-sm border border-gray-200"
+            >
+              <h3
+                class="font-black text-ocean-900 text-base mb-4 flex items-center gap-2 border-b pb-2"
+              >
+                <i class="fa-solid fa-filter text-ocean-600"></i> Categorias
+              </h3>
+              <div class="space-y-2 text-sm">
+                <label
+                  class="flex items-center gap-2 cursor-pointer hover:text-ocean-600"
+                >
+                  <input
+                    type="radio"
+                    name="catFilter"
+                    checked
+                    onclick="filterCategory('todas')"
+                    class="accent-ocean-600"
+                  />
+                  <span>Todas as Categorias</span>
+                </label>
+                <label
+                  class="flex items-center gap-2 cursor-pointer hover:text-ocean-600"
+                >
+                  <input
+                    type="radio"
+                    name="catFilter"
+                    onclick="filterCategory('varas')"
+                    class="accent-ocean-600"
+                  />
+                  <span>Varas & Molinetes</span>
+                </label>
+                <label
+                  class="flex items-center gap-2 cursor-pointer hover:text-ocean-600"
+                >
+                  <input
+                    type="radio"
+                    name="catFilter"
+                    onclick="filterCategory('anzois')"
+                    class="accent-ocean-600"
+                  />
+                  <span>Anzóis & Iscas</span>
+                </label>
+                <label
+                  class="flex items-center gap-2 cursor-pointer hover:text-ocean-600"
+                >
+                  <input
+                    type="radio"
+                    name="catFilter"
+                    onclick="filterCategory('nautica')"
+                    class="accent-ocean-600"
+                  />
+                  <span>Barcos & Náutica</span>
+                </label>
+                <label
+                  class="flex items-center gap-2 cursor-pointer hover:text-ocean-600"
+                >
+                  <input
+                    type="radio"
+                    name="catFilter"
+                    onclick="filterCategory('coletes')"
+                    class="accent-ocean-600"
+                  />
+                  <span>Coletes & Bóias</span>
+                </label>
+                <label
+                  class="flex items-center gap-2 cursor-pointer hover:text-ocean-600"
+                >
+                  <input
+                    type="radio"
+                    name="catFilter"
+                    onclick="filterCategory('praia')"
+                    class="accent-ocean-600"
+                  />
+                  <span>Praia & Verão</span>
+                </label>
+              </div>
+            </div>
+          </aside>
+
+          <!-- GRID DE PRODUTOS DA LOJA -->
+          <section class="flex-1">
+            <div
+              class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-6 flex justify-between items-center"
+            >
+              <div>
+                <h2 class="text-xl font-black text-ocean-900" id="catalogTitle">
+                  Produtos Pronta Entrega
+                </h2>
+                <p class="text-xs text-gray-500">
+                  Saindo diretamente do centro de distribuição em Icaraíma - PR
+                </p>
+              </div>
+            </div>
+
+            <div
+              id="productsGrid"
+              class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+            >
+              <!-- Inserido via JavaScript -->
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- PÁGINA 2: OFERTA ESPECIAL (LANDING PAGE) -->
+    <div id="landingPage" class="page-content flex-1 hidden">
+      <div class="bg-slate-900 text-white py-12 px-4">
+        <div
+          class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-8"
+        >
+          <div class="flex-1 space-y-4">
+            <span
+              class="bg-red-600 text-white text-xs font-black uppercase px-3 py-1 rounded"
+              >Oferta Limitada • Envio de Icaraíma</span
+            >
+            <h2 class="text-3xl font-black">
+              KIT CARBONO PRO PESCA EMBARCADA & RIO
+            </h2>
+            <p class="text-gray-300 text-sm">
+              Vara Carbono 2.70m + Molinete 10 Rolamentos + Linha Multifilamento
+              de brinde.
+            </p>
+            <div class="text-3xl font-black text-amber-400">
+              R$ 259,90
+              <span class="text-sm text-gray-400 line-through">R$ 399,00</span>
+            </div>
+            <button
+              onclick="addToCart(1)"
+              class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl transition"
+            >
+              Comprar Kit Agora
+            </button>
+          </div>
+          <div class="w-full md:w-1/2">
+            <img
+              src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80"
+              class="rounded-2xl shadow-2xl"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PÁGINA 3: SHOWROOM NÁUTICO -->
+    <div id="nauticaPage" class="page-content flex-1 hidden">
+      <div class="max-w-7xl mx-auto px-4 py-8 space-y-6">
+        <div class="bg-ocean-800 text-white p-8 rounded-2xl">
+          <h2 class="text-2xl font-black">
+            Showroom de Barcos e Lanchas em Icaraíma
+          </h2>
+          <p class="text-sm text-ocean-100 mt-1">
+            Conheça nossos modelos de alumínio reforçado para navegação no Rio
+            Paraná.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white p-4 rounded-xl border">
+            <img
+              src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=600&q=80"
+              class="w-full h-48 object-cover rounded-lg"
+            />
+            <h3 class="font-bold text-lg mt-3">Barco de Alumínio Naval 5M</h3>
+            <p class="text-xs text-gray-500">
+              Reforçado para motores até 40HP.
+            </p>
+            <div class="font-black text-ocean-900 text-xl mt-2">
+              R$ 12.990,00
+            </div>
+            <button
+              onclick="addToCart(4)"
+              class="w-full mt-3 bg-ocean-600 text-white font-bold py-2 rounded"
+            >
+              Encomendar / Comprar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PÁGINA 4: RASTREAMENTO DE PEDIDOS -->
+    <div id="trackPage" class="page-content flex-1 hidden">
+      <div class="max-w-xl mx-auto px-4 py-12">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border space-y-4">
+          <h2 class="text-xl font-bold text-ocean-900">Rastrear Seu Pedido</h2>
+          <p class="text-xs text-gray-500">
+            Digite o código da sua compra enviado por Erick Gabriel no WhatsApp.
+          </p>
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="trackCode"
+              placeholder="Ex: ICR-123456"
+              class="w-full border p-2.5 rounded text-sm"
+            />
+            <button
+              onclick="trackOrder()"
+              class="bg-ocean-600 text-white font-bold px-4 rounded text-xs"
+            >
+              Consultar
+            </button>
+          </div>
+          <div
+            id="trackResult"
+            class="hidden p-3 bg-gray-50 border rounded text-xs"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RODAPÉ COMPLETO COM CONTATO ERICK GABRIEL -->
+    <footer class="bg-ocean-dark text-white pt-10 pb-6 mt-auto">
+      <div
+        class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-white/10 text-xs"
+      >
+        <div>
+          <h4 class="font-bold text-sm text-amber-400 mb-2">
+            OCEAN FISH ICARAÍMA
+          </h4>
+          <p class="text-gray-300">
+            A sua melhor loja de pesca, praia e equipamentos náuticos do Paraná.
+            Enviamos direto da sede em Icaraíma para todo o Brasil.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm text-amber-400 mb-2">
+            ATENDIMENTO VIA WHATSAPP
+          </h4>
+          <p class="text-gray-300">
+            Vendedor responsável: <strong>Erick Gabriel</strong>
+          </p>
+          <a
+            href="https://wa.me/5544997241127"
+            target="_blank"
+            class="text-emerald-400 font-bold block mt-1 hover:underline"
+          >
+            <i class="fa-brands fa-whatsapp"></i> (44) 99724-1127
+          </a>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm text-amber-400 mb-2">LOCALIZAÇÃO</h4>
+          <p class="text-gray-300">Icaraíma - PR • CEP Sede: 87530-000</p>
+        </div>
+      </div>
+      <div class="text-center text-[11px] text-gray-400 mt-4">
+        © OCEAN FISH Icaraíma. Todos os direitos reservados. Atendimento: Erick
+        Gabriel.
+      </div>
+    </footer>
+
+    <!-- DRAWER DO CARRINHO LATERAL COM CALCULADORA DE FRETE DE ICARAÍMA -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+      <div
+        class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        onclick="toggleCartDrawer()"
+      ></div>
+      <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+        <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+          <div
+            class="p-4 bg-ocean-900 text-white flex items-center justify-between"
+          >
+            <h3 class="font-bold text-lg">
+              <i class="fa-solid fa-cart-shopping text-amber-400"></i> Carrinho
+            </h3>
+            <button
+              onclick="toggleCartDrawer()"
+              class="text-gray-300 hover:text-white p-2"
+            >
+              <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+          </div>
+          <div
+            class="flex-1 overflow-y-auto p-4 space-y-4"
+            id="cartItemsList"
+          ></div>
+          <div class="p-4 border-t bg-gray-50 space-y-3">
+            <!-- CALCULO DE FRETE DE ICARAÍMA ATÉ A CIDADE DO CLIENTE -->
+            <div class="bg-white p-3 rounded border space-y-2">
+              <div class="flex justify-between items-center">
+                <label class="text-xs font-bold text-gray-700"
+                  >Calcule o Frete da Sua Cidade:</label
+                >
+                <span
+                  class="text-[10px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded font-bold"
+                  >Origem: Icaraíma/PR</span
+                >
+              </div>
+              <div class="flex gap-2">
+                <input
+                  type="text"
+                  id="cartCep"
+                  placeholder="Digite seu CEP"
+                  maxlength="9"
+                  class="w-full border rounded text-xs px-2.5 py-2"
+                />
+                <button
+                  onclick="calculateShippingFromIcaraima()"
+                  class="bg-ocean-600 text-white text-xs px-3 py-2 rounded font-bold"
+                >
+                  Calcular
+                </button>
+              </div>
+              <div
+                id="shippingResult"
+                class="text-xs font-semibold p-2 rounded hidden"
+              ></div>
+            </div>
+
+            <div class="space-y-1 text-xs">
+              <div class="flex justify-between text-gray-600">
+                <span>Subtotal:</span
+                ><span id="cartSubtotal" class="font-bold">R$ 0,00</span>
+              </div>
+              <div class="flex justify-between text-gray-600">
+                <span>Frete (Icaraíma → Sua Cidade):</span
+                ><span id="cartShippingValue" class="font-bold text-ocean-700"
+                  >R$ 0,00</span
+                >
+              </div>
+              <div
+                class="flex justify-between text-base font-black text-slate-900 pt-2 border-t"
+              >
+                <span>Total Final:</span
+                ><span id="cartTotal" class="text-emerald-700">R$ 0,00</span>
+              </div>
+            </div>
+
+            <button
+              onclick="openCheckoutModal()"
+              class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 text-sm"
+            >
+              Enviar Pedido para Erick Gabriel
+              <i class="fa-brands fa-whatsapp text-lg"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE CHECKOUT -->
+    <div
+      id="modalCheckout"
+      class="fixed inset-0 z-50 flex items-center justify-center modal-backdrop hidden p-4"
+    >
+      <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+        <div class="flex justify-between items-center pb-4 border-b">
+          <h3 class="text-lg font-bold text-ocean-900">
+            Finalizar Pedido com Erick Gabriel
+          </h3>
+          <button onclick="closeModal('modalCheckout')" class="text-gray-400">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <form onsubmit="handleCheckoutSubmit(event)" class="space-y-4 mt-4">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1"
+              >Seu Nome Completo *</label
+            >
+            <input
+              type="text"
+              id="custName"
+              required
+              placeholder="Ex: Carlos Silva"
+              class="w-full border rounded-lg p-2.5 text-sm"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Seu WhatsApp *</label
+              >
+              <input
+                type="tel"
+                id="custPhone"
+                required
+                placeholder="(44) 99999-9999"
+                class="w-full border rounded-lg p-2.5 text-sm"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >CEP da Sua Cidade *</label
+              >
+              <input
+                type="text"
+                id="custCep"
+                required
+                placeholder="00000-000"
+                class="w-full border rounded-lg p-2.5 text-sm"
+              />
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1"
+              >Endereço de Entrega *</label
+            >
+            <input
+              type="text"
+              id="custAddress"
+              required
+              placeholder="Rua / Número / Bairro"
+              class="w-full border rounded-lg p-2.5 text-sm"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Sua Cidade *</label
+              >
+              <input
+                type="text"
+                id="custCity"
+                required
+                placeholder="Ex: Umuarama"
+                class="w-full border rounded-lg p-2.5 text-sm"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1"
+                >Estado (UF) *</label
+              >
+              <input
+                type="text"
+                id="custState"
+                required
+                placeholder="PR"
+                maxlength="2"
+                class="w-full border rounded-lg p-2.5 text-sm uppercase"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-3 rounded-xl shadow transition"
+          >
+            Enviar Pedido no WhatsApp do Erick Gabriel
+            <i class="fa-brands fa-whatsapp text-lg ml-1"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- PAINEL VENDEDOR -->
+    <div
+      id="modalSellerPanel"
+      class="fixed inset-0 z-50 flex items-center justify-center modal-backdrop hidden p-4"
+    >
+      <div class="bg-white rounded-2xl max-w-2xl w-full p-6">
+        <div class="flex justify-between items-center pb-4 border-b">
+          <h3 class="text-lg font-bold text-ocean-900">
+            Painel de Vendas - Erick Gabriel (Icaraíma)
+          </h3>
+          <button
+            onclick="closeModal('modalSellerPanel')"
+            class="text-gray-400"
+          >
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+        <div
+          class="space-y-3 my-4 max-h-60 overflow-y-auto"
+          id="sellerOrdersList"
+        ></div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div
+      id="toast"
+      class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300"
+    >
+      <i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
+      <span class="text-xs font-bold" id="toastMessage">Sucesso!</span>
+    </div>
+
+    <!-- SCRIPT JAVASCRIPT CORRIGIDO E SEM DUPLICIDADE -->
+    <script>
+      const SELLER_WHATSAPP = "5544997241127";
+      const SELLER_NAME = "Erick Gabriel";
+
+      const products = [
+        {
+          id: 1,
+          title: "Vara Evolltion",
+          category: "varas",
+          price: 155.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvkU0_pPUUgLBRDX6bxzV0dOy0H4Vcf5eOAIjESiNQ4g&s=10",
+          description: "Excelente para pescaria no Rio Paraná e represas.",
+        },
+        {
+          id: 2,
+          title: "Colete Salva-Vidas Homologado Náutico",
+          category: "coletes",
+          price: 150.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP5cY_npOwP_dNrZUpI2r4vSnkr6HMK31s2j2XWqUIwQ&s=10",
+          description: "Segurança total para navegação e jet-ski.",
+        },
+        {
+          id: 3,
+          title: "Bermuda de Banho UV50+ Secagem Rápida",
+          category: "praia",
+          price: 120.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT72IOPTovwAz8oR4uIz6GEuIY9qif9FWmNRnF-RcKuBw&s",
+          description: "Confortável para praia, piscina e pescaria.",
+        },
+        {
+          id: 4,
+          title: "roupa de praia feminina",
+          category: "roupa",
+          price: 120.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqHCVDIo_6ZuRG5HV9zQPlZE8Z2umWPfHDsn2mdhKx3w&s=10",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 5,
+          title: "mangueira inteligente transporte gasolina",
+          category: "Náutica",
+          price: 80.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3s-uJgxFqTQIfsmhg_3OKHVa9Klz40fhoU5Ijl04iEw&s",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 6,
+          title: "oleo de motor para barco",
+          category: "Náutica",
+          price: 150.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpITgZmrrkLvTC8ui8UA6xhUQ4ttuk95iHkb2SFw4TGg&s=10",
+        },
+        {
+          id: 7,
+          title: "espeto para churasqueira",
+          category: "Náutica",
+          price: 100.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2sn6uf0hVSzVe4sclx1PfBHaH3tjDtVPoSkaYeKchTw&s=10",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 8,
+          title: "caretilha para pesca.",
+          category: "molinetes",
+          price: 260.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzCx5g2YYnJrQPMpXvIyxuUH8jWb0DL3RU8t0YSHE8Gg&s=10",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 9,
+          title: "camisa de pesca com proteção UV50+",
+          category: "praia",
+          price: 120.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0NxTT-bzvDIxdAUGShT0yyt7h0QO0WM3fT6ixLGZ-jQ&s",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 10,
+          title: "repelente de mosquitos para pescaria",
+          category: "Náutica",
+          price: 28.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAD2Rwv_lJ347KgNjB1XoDZiVggwRN8Zypt1lzrl05KQ&s=10",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 11,
+          title: "rede de pesca artesanal com bastao para rios e lagos.",
+          category: "Náutica",
+          price: 80.0,
+          image:
+            "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQD5L1BAV-1F97w3r-uHP3KNoa41D99Dr23NAancF0-MfvelvxxGDuPks8yHwH8uMkUKcF6UyDttOxy5X6e_wxTJX5QjxFT2MYllM-1duFK8s-soFkPgLnYB_LHj8Vc6MKdkyil1Q&usqp=CAc",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 12,
+          title:
+            "chumbada para pesca de fundos sem anzol e com varios modelos.",
+          category: "anzois",
+          price: 18.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr8R3xiRd9qm4hRPKt-gsNC2xPUADTLh8KtFn9CkWRDw&s=10",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 13,
+          title: "ancora para barcos e lanchas de pequeno porte",
+          category: "barcos",
+          price: 200.0,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT49_dxhaMUZ73g0HGYp3ASZKKWlWDvvW7qTYiDhCuJCw&s=10",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+        {
+          id: 14,
+          title: "maleta de pesca com compartimentos para iscas e anzóis.",
+          category: "iscas",
+          price: 99.9,
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9ndfoTnbmjOLSKizxnwME_Xvh6jeXT6UZY_8gmCDJvQ&s",
+          description: "Enviado direto de Icaraíma - PR.",
+        },
+      ];
+
+      let cart = [];
+      let calculatedShipping = 0;
+      let currentCategory = "todas";
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderProducts();
+      });
+
+      // NAVEGAÇÃO ENTRE PÁGINAS SEM RECARREGAR
+      function showPage(pageId) {
+        document
+          .querySelectorAll(".page-content")
+          .forEach((el) => el.classList.add("hidden"));
+        document.getElementById(pageId).classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // FILTRO DE CATEGORIAS FUNCIONAL
+      function filterCategory(cat) {
+        currentCategory = cat;
+        renderProducts();
+        showToast(`Categoria filtrada: ${cat.toUpperCase()}`);
+      }
+
+      function renderProducts() {
+        const grid = document.getElementById("productsGrid");
+        grid.innerHTML = "";
+
+        const filtered =
+          currentCategory === "todas"
+            ? products
+            : products.filter((p) => p.category === currentCategory);
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `<p class="col-span-full text-center py-8 text-gray-400 text-xs font-bold">Nenhum produto nesta categoria no momento.</p>`;
+          return;
+        }
+
+        filtered.forEach((p) => {
+          grid.innerHTML += `
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition border border-gray-200 flex flex-col">
+            <div class="relative h-48 bg-gray-100 overflow-hidden">
+              <img src="${p.image}" class="w-full h-full object-cover">
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+              <div>
+                <h3 class="font-bold text-sm text-slate-900">${p.title}</h3>
+                <p class="text-xs text-gray-500 mt-1">${p.description}</p>
+                <div class="text-xl font-black text-ocean-900 mt-2">R$ ${p.price.toFixed(2)}</div>
+              </div>
+              <button onclick="addToCart(${p.id})" class="w-full bg-ocean-600 hover:bg-ocean-700 text-white text-xs font-bold py-2.5 rounded-lg transition">
+                Adicionar ao Carrinho
+              </button>
+            </div>
+          </div>
+        `;
+        });
+      }
+
+      // CÁLCULO DE FRETE DE ICARAÍMA PARA CIDADE DO CLIENTE
+      async function calculateShippingFromIcaraima() {
+        const rawCep = document
+          .getElementById("cartCep")
+          .value.replace(/\D/g, "");
+        const resultBox = document.getElementById("shippingResult");
+
+        if (rawCep.length !== 8) {
+          resultBox.className =
+            "text-xs font-semibold p-2 rounded bg-red-50 text-red-700 border block";
+          resultBox.innerText = "Por favor, digite um CEP válido.";
+          return;
+        }
+
+        resultBox.className =
+          "text-xs font-semibold p-2 rounded bg-blue-50 text-blue-700 border block";
+        resultBox.innerText = "Buscando localização da sua cidade...";
+
+        try {
+          const response = await fetch(
+            `https://viacep.com.br/ws/${rawCep}/json/`,
+          );
+          const data = await response.json();
+
+          if (data.erro) {
+            resultBox.className =
+              "text-xs font-semibold p-2 rounded bg-red-50 text-red-700 border block";
+            resultBox.innerText = "CEP não encontrado.";
+            return;
+          }
+
+          document.getElementById("custCep").value = data.cep;
+          document.getElementById("custCity").value = data.localidade;
+          document.getElementById("custState").value = data.uf;
+
+          if (
+            data.uf === "PR" &&
+            data.localidade.toLowerCase().includes("icaraima")
+          ) {
+            calculatedShipping = 0;
+            resultBox.className =
+              "text-xs font-semibold p-2 rounded bg-emerald-50 text-emerald-800 border block";
+            resultBox.innerHTML = `<strong>ENTREGA EM ICARAÍMA:</strong> GRÁTIS`;
+          } else if (data.uf === "PR") {
+            calculatedShipping = 24.9;
+            resultBox.className =
+              "text-xs font-semibold p-2 rounded bg-emerald-50 text-emerald-800 border block";
+            resultBox.innerHTML = `<strong>Envio Icaraíma → ${data.localidade}/${data.uf}:</strong> R$ 24,90`;
+          } else {
+            calculatedShipping = 39.9;
+            resultBox.className =
+              "text-xs font-semibold p-2 rounded bg-emerald-50 text-emerald-800 border block";
+            resultBox.innerHTML = `<strong>Envio Interestadual Icaraíma → ${data.localidade}/${data.uf}:</strong> R$ 39,90`;
+          }
+
+          updateCartUI();
+        } catch (err) {
+          resultBox.className =
+            "text-xs font-semibold p-2 rounded bg-red-50 text-red-700 border block";
+          resultBox.innerText = "Erro ao buscar CEP.";
+        }
+      }
+
+      // LÓGICA DO CARRINHO
+      function addToCart(id) {
+        const product = products.find((p) => p.id === id);
+        const existing = cart.find((item) => item.id === id);
+        if (existing) existing.quantity += 1;
+        else cart.push({ ...product, quantity: 1 });
+        updateCartUI();
+        toggleCartDrawer(true);
+        showToast("Produto adicionado ao carrinho!");
+      }
+
+      function updateCartUI() {
+        const list = document.getElementById("cartItemsList");
+        const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+        const subtotal = cart.reduce(
+          (acc, item) => acc + item.price * item.quantity,
+          0,
+        );
+
+        document.getElementById("cartBadge").innerText = totalItems;
+        document.getElementById("cartHeaderTotal").innerText =
+          `R$ ${(subtotal + calculatedShipping).toFixed(2)}`;
+        document.getElementById("cartSubtotal").innerText =
+          `R$ ${subtotal.toFixed(2)}`;
+        document.getElementById("cartShippingValue").innerText =
+          `R$ ${calculatedShipping.toFixed(2)}`;
+        document.getElementById("cartTotal").innerText =
+          `R$ ${(subtotal + calculatedShipping).toFixed(2)}`;
+
+        if (cart.length === 0) {
+          list.innerHTML = `<p class="text-center text-gray-400 py-8 text-xs font-bold">Carrinho Vazio</p>`;
+          return;
+        }
+
+        list.innerHTML = "";
+        cart.forEach((item, index) => {
+          list.innerHTML += `
+          <div class="flex items-center gap-3 p-2.5 bg-gray-50 rounded-lg border">
+            <img src="${item.image}" class="w-12 h-12 object-cover rounded">
+            <div class="flex-1">
+              <h4 class="font-bold text-xs">${item.title}</h4>
+              <span class="text-xs text-ocean-700 font-bold">R$ ${item.price.toFixed(2)}</span>
+            </div>
+            <button onclick="removeFromCart(${index})" class="text-red-500 text-xs font-bold"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+        });
+      }
+
+      function removeFromCart(idx) {
+        cart.splice(idx, 1);
+        updateCartUI();
+      }
+
+      function toggleCartDrawer(forceOpen = false) {
+        const drawer = document.getElementById("cartDrawer");
+        if (forceOpen) drawer.classList.remove("hidden");
+        else drawer.classList.toggle("hidden");
+      }
+
+      function openCheckoutModal() {
+        if (cart.length === 0) return showToast("Carrinho vazio!");
+        toggleCartDrawer(false);
+        openModal("modalCheckout");
+      }
+
+      function handleCheckoutSubmit(e) {
+        e.preventDefault();
+
+        const orderData = {
+          id: "ICR-" + Math.floor(100000 + Math.random() * 900000),
+          customer: {
+            name: document.getElementById("custName").value,
+            phone: document.getElementById("custPhone").value,
+            cep: document.getElementById("custCep").value,
+            address: document.getElementById("custAddress").value,
+            city: document.getElementById("custCity").value,
+            state: document.getElementById("custState").value,
+          },
+          items: [...cart],
+          shipping: calculatedShipping,
+          total:
+            cart.reduce((acc, i) => acc + i.price * i.quantity, 0) +
+            calculatedShipping,
+        };
+
+        let text = `*NOVO PEDIDO DE COMPRA (#${orderData.id})*\n\n`;
+        text += `*Atendimento:* ${SELLER_NAME}\n`;
+        text += `*CLIENTE:* ${orderData.customer.name}\n`;
+        text += `*WHATSAPP:* ${orderData.customer.phone}\n\n`;
+        text += `*ENTREGA:* ${orderData.customer.address} - ${orderData.customer.city}/${orderData.customer.state} (CEP: ${orderData.customer.cep})\n\n`;
+        text += `*PRODUTOS:*\n`;
+        cart.forEach(
+          (i) =>
+            (text += `- ${i.quantity}x ${i.title} (R$ ${i.price.toFixed(2)})\n`),
+        );
+        text += `\n*FRETE DE ICARAÍMA:* R$ ${orderData.shipping.toFixed(2)}`;
+        text += `\n*TOTAL FINAL:* R$ ${orderData.total.toFixed(2)}`;
+
+        window.open(
+          `https://wa.me/${SELLER_WHATSAPP}?text=${encodeURIComponent(text)}`,
+          "_blank",
+        );
+        cart = [];
+        updateCartUI();
+        closeModal("modalCheckout");
+        showToast("Pedido enviado para Erick Gabriel!");
+      }
+
+      function trackOrder() {
+        const code = document.getElementById("trackCode").value;
+        const res = document.getElementById("trackResult");
+        if (!code) return alert("Digite o código do pedido!");
+        res.classList.remove("hidden");
+        res.innerHTML = `<strong>Pedido ${code.toUpperCase()}</strong>: Objeto postado na agência de Icaraíma - PR. Em trânsito para sua cidade!`;
+      }
+
+      function toggleSellerPanel() {
+        openModal("modalSellerPanel");
+      }
+      function openModal(id) {
+        document.getElementById(id).classList.remove("hidden");
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.add("hidden");
+      }
+
+      function showToast(msg) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toastMessage").innerText = msg;
+        toast.classList.remove("translate-y-20", "opacity-0");
+        setTimeout(
+          () => toast.classList.add("translate-y-20", "opacity-0"),
+          3000,
+        );
+      }
+
+      function searchProducts() {
+        const query = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const grid = document.getElementById("productsGrid");
+        grid.innerHTML = "";
+        const filtered = products.filter((p) =>
+          p.title.toLowerCase().includes(query),
+        );
+
+        filtered.forEach((p) => {
+          grid.innerHTML += `
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm border p-4 flex flex-col justify-between">
+            <div>
+              <img src="${p.image}" class="w-full h-40 object-cover rounded-lg mb-3">
+              <h3 class="font-bold text-sm">${p.title}</h3>
+              <div class="text-lg font-black text-ocean-900 mt-2">R$ ${p.price.toFixed(2)}</div>
+            </div>
+            <button onclick="addToCart(${p.id})" class="w-full bg-ocean-600 text-white font-bold py-2 rounded mt-3 text-xs">Adicionar</button>
+          </div>
+        `;
+        });
+      }
+    </script>
+  </body>
+</html>
